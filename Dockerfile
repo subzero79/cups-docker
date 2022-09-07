@@ -16,7 +16,7 @@ LABEL repository="https://github.com/anujdatar/cups-docker"
 # Install dependencies
 RUN apt-get update -qq  && apt-get upgrade -qqy && \
     apt-get install -qqy apt-utils usbutils \
-    cups git build-essential cmake libcups2-dev libcupsimage2-dev
+    cups git build-essential cmake libcups2-dev libcupsimage2-dev tzdata
 
 
 RUN git clone https://github.com/klirichek/zj-58 /zj58
