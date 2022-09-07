@@ -1,4 +1,4 @@
-FROM ubuntu:focal
+FROM ubuntu:jammy
 
 # ENV variables
 ENV DEBIAN_FRONTEND noninteractive
@@ -16,15 +16,14 @@ LABEL repository="https://github.com/anujdatar/cups-docker"
 # Install dependencies
 RUN apt-get update -qq  && apt-get upgrade -qqy && \
     apt-get install -qqy apt-utils usbutils \
-    cups cups-filters \
-    printer-driver-all \
-    printer-driver-cups-pdf \
-    printer-driver-foo2zjs \
-    foomatic-db-compressed-ppds \
-    openprinting-ppds \
-    hpijs-ppds \
-    hp-ppd \
-    hplip
+    cups git build-essential cmake libcups2-dev libcupsimage2-dev
+
+
+RUN git clone https://github.com/klirichek/zj-58 /zj58
+RUN cd /zj58 && mkdir build && cd build && cmake ../
+RUN cmake --build /zj58/build
+RUN mkdir /usr/share/cups/model/zjiang && cp /zj58/build/ppd/zj80.ppd /usr/share/cups/model/zjiang/zj80.ppd
+RUN cp /zj58/build/rastertozj /usr/lib/cups/filter/rastertozj
 
 EXPOSE 631
 
